@@ -15,11 +15,13 @@ def create_app(config_name):
     app.config.from_pyfile('config.py')
 
     db.init_app(app)
-
+    
     migrate = Migrate(app, db)
+    
+    from app import models
+    
     
     from .authentification import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
     return app
 
-from . import models

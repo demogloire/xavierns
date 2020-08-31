@@ -5,12 +5,12 @@ from flask_login import UserMixin, current_user
 
 
 
-class Rubrique (db.Model):
+class Rubrique(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     nom=db.Column(db.String(120))
     statut=db.Column(db.Boolean, default=True)
     affectation=db.Column(db.Boolean, default=True)
-    rubrique_communautes=db.relationship('RubriqueCommunaute', backref='rubrique_communaute', lazy='dynamic')
+    rubrique_communautes=db.relationship('Rubriquecommunaute', backref='rubrique_communaute', lazy='dynamic')
 
 class User(db.Model, UserMixin):
     id=db.Column(db.Integer, primary_key=True)
@@ -24,7 +24,7 @@ class User(db.Model, UserMixin):
     avatar=db.Column(db.String(120))
     statut=db.Column(db.Boolean, default=True)
     communaute_id=db.Column(db.Integer, db.ForeignKey('communaute.id'), nullable=False)
-    operations=db.relationship('operation', backref='user_operation', lazy='dynamic')
+    operations=db.relationship('Operation', backref='user_operation', lazy='dynamic')
     
 
 class Communaute(db.Model):
@@ -33,18 +33,18 @@ class Communaute(db.Model):
     lieu=db.Column(db.String(120))
     province=db.Column(db.String(120))
     pays=db.Column(db.String(120))
-    users=db.relationship('user', backref='communaute_user', lazy='dynamic')
-    RubriqueCommunautes=db.relationship('RubriqueCommunaute', backref='RubriqueCommunaute_communaute', lazy='dynamic')
-    syntheses=db.relationship('synthese', backref='communaute_synthese', lazy='dynamic')
-    soldes=db.relationship('solde', backref='communaute_solde', lazy='dynamic')
+    users=db.relationship('User', backref='communaute_user', lazy='dynamic')
+    rubriquecommunautes=db.relationship('Rubriquecommunaute', backref='rubcom', lazy='dynamic')
+    syntheses=db.relationship('Synthese', backref='communaute_synthese', lazy='dynamic')
+    soldes=db.relationship('Solde', backref='communaute_solde', lazy='dynamic')
      
 class Operation(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     designation=db.Column(db.String(255))
-    montant_USD=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
-    montant_CDF=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
+    montant_usd=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
+    montant_cdf=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
     user_id=db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    RubriqueCommunaute_id=db.Column(db.Integer, db.ForeignKey('RubriqueCommunaute.id'), nullable=False)
+    rubriquecommunaute_id=db.Column(db.Integer, db.ForeignKey('rubriquecommunaute.id'), nullable=False)
     source_id=db.Column(db.Integer, db.ForeignKey('source.id'), nullable=False)
     annee_id=db.Column(db.Integer, db.ForeignKey('annee.id'), nullable=False)
     taux_id=db.Column(db.Integer, db.ForeignKey('taux.id'), nullable=False)
@@ -54,16 +54,17 @@ class Taux(db.Model):
     usd_edf=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
     cdf_usd=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
     statut=db.Column(db.Boolean, default=True)
-    operations=db.relationship('operation', backref='taux_operation', lazy='dynamic')
+    operations=db.relationship('Operation', backref='taux_operation', lazy='dynamic')
 
 class Annee(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     annee=db.Column(db.Integer)
     statut=db.Column(db.Boolean, default=True)
-    operations=db.relationship('operation', backref='operation_annee', lazy='dynamic')
-    syntheses=db.relationship('synthese', backref='synthese_annee', lazy='dynamic')
+    operations=db.relationship('Operation', backref='operation_annee', lazy='dynamic')
+    syntheses=db.relationship('Synthese', backref='synthese_annee', lazy='dynamic')
+    soldes=db.relationship('Solde', backref='solde_annee', lazy='dynamic')
 
-class synthese(db.Model):
+class Synthese(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     janvier=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
     fevrier=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
@@ -96,18 +97,18 @@ class synthese(db.Model):
     val_decmbre=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
     valeur=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
     communaute_id=db.Column(db.Integer, db.ForeignKey('communaute.id'), nullable=False)
-    rubrique_communaute_id=db.Column(db.Integer, db.ForeignKey('rubrique_communaute.id', nullable=False))
+    rubriquecommunaute_id=db.Column(db.Integer, db.ForeignKey('rubriquecommunaute.id'), nullable=False)
     annee_id=db.Column(db.Integer, db.ForeignKey('annee.id'), nullable=False)
 
-class RubriqueCommunaute(db.Model):
+class Rubriquecommunaute(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     nom=db.Column(db.String(120))
     statut=db.Column(db.Boolean, default=True)
     affectation=db.Column(db.Boolean, default=True)
     rubrique_id=db.Column(db.Integer, db.ForeignKey('rubrique.id'), nullable=False)
     communaute_id=db.Column(db.Integer, db.ForeignKey('communaute.id'), nullable=False)
-    operations=db.relationship('operation', backref='RubriqueCommunaute_operation', lazy='dynamic')
-    syntheses=db.relationship('synthese', backref='RubriqueCommunaute_synthese', lazy='dynamic')
+    operations=db.relationship('Operation', backref='RubriqueCommunaute_operation', lazy='dynamic')
+    syntheses=db.relationship('Synthese', backref='RubriqueCommunaute_synthese', lazy='dynamic')
 
 class Solde(db.Model):
     id=db.Column(db.Integer, primary_key=True)
@@ -115,20 +116,11 @@ class Solde(db.Model):
     depense=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
     solde=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
     communaute_id=db.Column(db.Integer, db.ForeignKey('communaute.id'), nullable=False)
+    solde_id=db.Column(db.Integer, db.ForeignKey('solde.id'), nullable=False)
 
 class Source(db.Model):
     id=db.Column(db.Integer, primary_key=True)
     designation=db.Column(db.String(120))
-    operations=db.relationship('operation', backref='source_operation', lazy='dynamic')
-
-    
-    
-
-
-
-
-    
-
-
+    operations=db.relationship('Operation', backref='source_operation', lazy='dynamic')
 
 
