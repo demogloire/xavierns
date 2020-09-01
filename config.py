@@ -13,6 +13,7 @@ class DevelopmentConfig(Config):
 
     DEBUG = True
     SQLALCHEMY_ECHO = True
+    SECRET_KEY = '9462bfc3ca8d37b136173798873d05ea'
 
 
 class ProductionConfig(Config):
@@ -21,6 +22,7 @@ class ProductionConfig(Config):
     """
 
     DEBUG = False
+    SECRET_KEY = '9462bfc3ca8d37b136173798873d05ea'
 
 app_config = {
     'development': DevelopmentConfig,

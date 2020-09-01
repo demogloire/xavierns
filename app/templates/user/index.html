@@ -1,0 +1,43 @@
+
+<a href="{{url_for('user.ajouter_utilisateur')}}">Ajouter utilisateur</a>
+<br>
+
+
+{%if utilisateur!=[] %}
+<table>
+    <tr>
+        <td>Noms</td>
+        <td>Rôle</td>
+        <td>Tél</td>
+        <td>Nom d'utilisateur</td>
+        <td>Mot de passe</td>
+        <td>Communauté</td>
+        <td>Statut</td>
+        <td>Actions</td>
+    </tr>
+    {%for utilisateurs in utilisateur%}
+    <tr>
+        <td>{{ ' {} {} {} '.format(utilisateurs.nom, utilisateurs.post_nom, utilisateurs.prenom) }}</td>
+        <td>{{ utilisateurs.role}}</td>
+        <td>{{ utilisateurs.tel}}</td>
+        <td>{{ utilisateurs.username}}</td>
+        <td>{{ utilisateurs.password_vis}}</td>
+        <td>{{ utilisateurs.communaute_user.nom}}</td>
+        <td>
+            <a href="">
+            {%if utilisateurs.statut==True %}
+                Debloqué
+            {%else%}
+                Bloqué
+            {%endif%}
+            </a>
+
+        </td>
+        <td> <a href="">Edit</a></td>
+    </tr>
+    {%endfor%}
+</table>
+{%else%}
+
+Aucune communauté engreistrée.
+{%endif%} 

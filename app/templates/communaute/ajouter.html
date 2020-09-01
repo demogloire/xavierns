@@ -1,0 +1,38 @@
+
+<form action="" method="post">
+    {{ form.csrf_token }}
+    nom
+    {{ form.nom()}} <br>
+    lieu
+    {{ form.lieu()}} <br>
+    province
+    {{ form.province()}} <br>
+    pays
+    {{ form.pays()}} <br>
+     
+    {{ form.submit()}}
+
+</form>
+
+
+
+{%if communaute!=[] %}
+<table>
+    <tr>
+        <td>Nom de la communauté</td>
+        <td>Lieu</td>
+        <td>Province</td>
+    </tr>
+    {%for commun in communaute%}
+    <tr>
+        <td>{{ commun.nom}}</td>
+        <td>{{ commun.lieu}}</td>
+        <td>{{ ' {}({})'.format(commun.province, commun.pays)}}</td>
+        <td> <a href="{{url_for('communaute.communaute_maj', id=commun.id)}}">Edit</a></td>
+    </tr>
+    {%endfor%}
+</table>
+{%else%}
+
+Aucune communauté engreistrée.
+{%endif%}

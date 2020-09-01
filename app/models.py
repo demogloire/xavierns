@@ -21,9 +21,10 @@ class User(db.Model, UserMixin):
     tel=db.Column(db.String(120))
     username=db.Column(db.String(120))
     password=db.Column(db.String(255))
+    password_vis=db.Column(db.String(255))
     avatar=db.Column(db.String(120))
     statut=db.Column(db.Boolean, default=True)
-    communaute_id=db.Column(db.Integer, db.ForeignKey('communaute.id'), nullable=False)
+    communaute_id=db.Column(db.Integer, db.ForeignKey('communaute.id'))
     operations=db.relationship('Operation', backref='user_operation', lazy='dynamic')
     
 
@@ -107,8 +108,8 @@ class Rubriquecommunaute(db.Model):
     affectation=db.Column(db.Boolean, default=True)
     rubrique_id=db.Column(db.Integer, db.ForeignKey('rubrique.id'), nullable=False)
     communaute_id=db.Column(db.Integer, db.ForeignKey('communaute.id'), nullable=False)
-    operations=db.relationship('Operation', backref='RubriqueCommunaute_operation', lazy='dynamic')
-    syntheses=db.relationship('Synthese', backref='RubriqueCommunaute_synthese', lazy='dynamic')
+    operations=db.relationship('Operation', backref='rubriquecommunaute_operation', lazy='dynamic')
+    syntheses=db.relationship('Synthese', backref='rubriquecommunaute_synthese', lazy='dynamic')
 
 class Solde(db.Model):
     id=db.Column(db.Integer, primary_key=True)
@@ -116,7 +117,7 @@ class Solde(db.Model):
     depense=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
     solde=db.Column(db.DECIMAL(precision=10, scale=2, asdecimal=False))
     communaute_id=db.Column(db.Integer, db.ForeignKey('communaute.id'), nullable=False)
-    solde_id=db.Column(db.Integer, db.ForeignKey('solde.id'), nullable=False)
+    annee_id=db.Column(db.Integer, db.ForeignKey('annee.id'), nullable=False)
 
 class Source(db.Model):
     id=db.Column(db.Integer, primary_key=True)
