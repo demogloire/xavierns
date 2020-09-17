@@ -24,7 +24,7 @@
         <td>{{ utilisateurs.password_vis}}</td>
         <td>{{ utilisateurs.communaute_user.nom}}</td>
         <td>
-            <a href="">
+            <a href="{{url_for('user.activation', id=utilisateurs.id)}}">
             {%if utilisateurs.statut==True %}
                 Debloqué
             {%else%}
@@ -33,7 +33,7 @@
             </a>
 
         </td>
-        <td> <a href="">Edit</a></td>
+        <td><a href="{{url_for('user.editet_utilisateur', id=utilisateurs.id)}}">Edit</a></td>
     </tr>
     {%endfor%}
 </table>

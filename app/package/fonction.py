@@ -18,7 +18,6 @@ def utilisateur(prenom=None,nom=None, user_pass=False):
         return None
     # requpete de vérification des utilsaiteur
     user_username=User.query.filter_by(statut=True).all()
-    print(len(user_username))
     #Username
     user_name=f'{prenom}{nom[0]}{len(user_username)+1}@sr-xaverienne.cd'
     
