@@ -41,8 +41,8 @@ def create_app(config_name):
     app.register_blueprint(user_blueprint)
 
     # Rubrique
-    # from .rubrique import rubrique as rubrique_blueprint
-    # app.register_blueprint(rubrique_blueprint)
+    from .rubrique import rubrique as rubrique_blueprint
+    app.register_blueprint(rubrique_blueprint)
     
     return app
 

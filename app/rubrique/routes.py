@@ -50,7 +50,7 @@ def ajout_rubrique():
       db.session.add(ajout)
       db.session.commit()
       flash('Enregistremet réussi','success')
-      return redirect(url_for('rubrique.rubrique'))
+      return redirect(url_for('rubrique.ajout_rubrique'))
    
    return render_template('rubrique/ajout_rubrique.html', title=title, form=form, rubrique=rubrique_req)
 
