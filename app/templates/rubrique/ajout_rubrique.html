@@ -1,0 +1,28 @@
+"""formulaire de la page ajout_rubrique"
+<form action="" method="post">
+    {{ form.csrf_token }} <br>
+    nom
+     
+    {{ form.submit()}}
+
+</form>
+
+
+
+{%if rubrique!=[] %}
+<table>
+    <tr>
+        <td>Nom du rubrique</td>
+        
+    </tr>
+    {%for rubriq in rubrique%}
+    <tr>
+        <td>{{ rubriq.nom}}</td>
+        <td> <a href="{{url_for('rubrique.editer_rubrique', id=rubrique.id)}}">Edit</a></td>
+    </tr>
+    {%endfor%}
+</table>
+{%else%}
+
+Aucun rubrique engreistré.
+{%endif%}

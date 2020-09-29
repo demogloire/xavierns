@@ -39,6 +39,10 @@ def create_app(config_name):
     #La communauté
     from .user import user as user_blueprint
     app.register_blueprint(user_blueprint)
+
+    # Rubrique
+    # from .rubrique import rubrique as rubrique_blueprint
+    # app.register_blueprint(rubrique_blueprint)
     
     return app
 
